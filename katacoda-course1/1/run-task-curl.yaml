@@ -1,0 +1,13 @@
+# task-curlの実行用TaskRun
+# 引用元:
+# https://hub.tekton.dev/tekton/task/curl
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: run-task-curl
+spec:
+  params:
+    - name: url
+      value: "www.google.com"
+  taskRef:
+    name: task-curl

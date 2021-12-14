@@ -1,0 +1,25 @@
+# curlコマンド実行を行うTask
+# 引用元:
+# https://hub.tekton.dev/tekton/task/curl
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task-curl
+spec:
+  params:
+  - name: url
+    description: URL to curl'ed
+    type: string
+  - name: options
+    description: options of url
+    type: array
+    default: []
+  - name: curl-image
+    description: option of curl image
+    type: string
+    default: "docker.io/curlimages/curl:7.72.0@sha256:bd5bbd35f89b867c1dccbc84b8be52f3f74dea20b46c5fe0db3780e040afcb6f" #tag: 7.72.0
+  steps:
+  - name: curl
+    image: "$(params.curl-image)"
+    command: [curl]
+    args: ["$(params.options[*])", "$(params.url)"]
