@@ -1,6 +1,5 @@
 # curlコマンド実行を行うTask
-# 引用元:
-# https://hub.tekton.dev/tekton/task/curl
+# 引用元: https://hub.tekton.dev/tekton/task/curl
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
