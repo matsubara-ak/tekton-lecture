@@ -6,7 +6,7 @@ def index():
   return "Tekton lecture!"
 
 @app.route("/hello")
-def index():
+def hello():
   return "Hello World!"
 
 if __name__ == "__main__":
