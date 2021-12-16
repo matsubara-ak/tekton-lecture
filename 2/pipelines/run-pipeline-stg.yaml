@@ -6,6 +6,9 @@ spec:
   params:
     - name: gitRevision
       value: dev
+  workspaces:
+    - name: git
+      emptyDir: {}
   pipelineRef:
     name: pipeline-stg
   timeout: 10m0s

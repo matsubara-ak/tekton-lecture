@@ -7,6 +7,8 @@ spec:
     - name: gitRevision
       type: string
       default: main
+  workspaces:
+    - name: git
   tasks:
     - name: build-app
       taskRef:
@@ -16,7 +18,7 @@ spec:
           value: $(params.gitRevision)
       workspaces:
         - name: git
-          emptyDir: {}
+          workspace: git
     - name: deploy-app
       taskRef:
         name: task-deploy-app
