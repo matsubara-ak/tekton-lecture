@@ -1,9 +1,9 @@
-FROM gcr.io/google-appengine/python
+FROM python:3.11.0a3-alpine3.15
 
-RUN virtualenv /env
+# RUN virtualenv /env
 
-ENV VIRTUAL_ENV /env
-ENV PATH /env/bin:$PATH
+# ENV VIRTUAL_ENV /env
+# ENV PATH /env/bin:$PATH
 ENV PORT 8080
 
 COPY app /cache/app
@@ -11,4 +11,4 @@ COPY app /cache/app
 RUN pip install -r /cache/app/requirements.txt
 
 WORKDIR /cache/app
-CMD gunicorn -b :$PORT main:app
+CMD ["python", "main.py"]

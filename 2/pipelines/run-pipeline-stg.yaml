@@ -3,10 +3,9 @@ kind: PipelineRun
 metadata:
   generateName: run-pipeline-stg-
 spec:
+  params:
+    - name: gitRevision
+      value: dev
   pipelineRef:
     name: pipeline-stg
-  params:
-  - name: revision
-    value: main
-  - name: url
-    value: https://github.com/tektoncd/website/
+  timeout: 10m0s

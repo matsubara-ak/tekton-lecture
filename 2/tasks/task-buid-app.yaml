@@ -9,11 +9,11 @@ spec:
     - name: dockerfilePath
       type: string
       description: The path to the dockerfile
-      default: /workspace/git/katacoda-course2/src/Dockerfile
+      default: /workspace/git/tekton-lecture/2/src/Dockerfile
     - name: contextPath
       type: string
       description: Docker build context
-      default: /workspace/git/katacoda-course2/src/
+      default: /workspace/git/tekton-lecture/2/src/
     - name: imageName
       type: string
       description: The name of built image
@@ -34,16 +34,19 @@ spec:
       type: string
       description: The revision/branch of the repository
       default: main
+  workspaces:
+    - name: git
+      description: Mount emptyDir
   steps:
     - name: git-pull
       args:
         - clone
         - https://$(params.gitRepositoryManagerFQDN)/$(params.gitOrganization)/$(params.gitRepository).git
-        - $(params.gitUrl)
       command:
         - /usr/bin/git
       image: docker:git
       resources: {}
+      workingDir: $(workspaces.git.path)
     - name: git-checkout
       args:
         - checkout
@@ -52,7 +55,7 @@ spec:
         - /usr/bin/git
       image: docker:git
       resources: {}
-      workingDir: /workspace/$(params.gitRepository)
+      workingDir: $(workspaces.git.path)/$(params.gitRepository)
     - name: docker
       image: docker
       command:

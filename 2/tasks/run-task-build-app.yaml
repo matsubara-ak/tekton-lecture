@@ -9,3 +9,6 @@ spec:
       value: dev
   taskRef:
     name: task-build-app
+  workspaces:
+    - name: git
+      emptyDir: {}

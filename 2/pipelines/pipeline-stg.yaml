@@ -3,17 +3,20 @@ kind: Pipeline
 metadata:
   name: pipeline-stg
 spec:
-  resources:
-  - name: git
-    type: git
+  params:
+    - name: gitRevision
+      type: string
+      default: main
   tasks:
     - name: build-app
       taskRef:
         name: task-build-app
-      resources:
-        inputs:
+      params:
+        - name: gitRevision
+          value: $(params.gitRevision)
+      workspaces:
         - name: git
-          resource: git
+          emptyDir: {}
     - name: deploy-app
       taskRef:
         name: task-deploy-app

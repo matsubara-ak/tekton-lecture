@@ -1,0 +1,8 @@
+# 検証用TaskRun
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: run-task-deploy-app-
+spec:
+  taskRef:
+    name: task-deploy-app
