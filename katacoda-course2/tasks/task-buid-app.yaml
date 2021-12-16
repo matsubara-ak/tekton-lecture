@@ -1,0 +1,59 @@
+# build用Task
+# 引用元: https://github.com/tektoncd/website/tree/main/tutorials/katacoda/getting-started
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task-build-app
+spec:
+  params:
+    - name: dockerfilePath
+      type: string
+      description: The path to the dockerfile
+      default: /workspace/git/katacoda-course2/src/Dockerfile
+    - name: contextPath
+      type: string
+      description: Docker build context
+      default: /workspace/git/katacoda-course2/src/
+    - name: imageName
+      type: string
+      description: The name of built image
+      default: app
+    - name: gitRevision
+      type: string
+      description: The revision/branch of the repository
+      default: main
+    - name: gitUrl
+      type: string
+      description: The URL of the repository
+      default: https://github.com/tektoncd/website/
+  steps:
+    # - name: pytest
+    #   image: python:3.9
+    #   command:
+    #     - /bin/bash
+    #     - -c
+    #   args:
+    #     - cd $(params.srcPath) && pip3 install -r requirements.txt && pip3 install -r dev_requirements.txt && pytest .
+    - name: docker
+      image: docker
+      command:
+        - docker
+      args:
+        - build
+        - -f
+        - $(params.dockerfilePath)
+        - -t
+        - $(params.imageName)
+        - $(params.contextPath)
+      volumeMounts:
+        - name: dsocket
+          mountPath: /var/run/docker.sock
+        - name: dlib
+          mountPath: /var/lib/docker
+  volumes:
+    - name: dsocket
+      persistentVolumeClaim:
+        claimName: dsocket-vol-claim
+    - name: dlib
+      persistentVolumeClaim:
+        claimName: dlib-vol-claim

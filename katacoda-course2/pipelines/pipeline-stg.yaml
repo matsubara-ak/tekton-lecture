@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline-stg
+spec:
+  resources:
+  - name: git
+    type: git
+  tasks:
+    - name: build-app
+      taskRef:
+        name: task-build-app
+      resources:
+        inputs:
+        - name: git
+          resource: git
+    - name: deploy-app
+      taskRef:
+        name: task-deploy-app
+      runAfter:
+        - build-app
