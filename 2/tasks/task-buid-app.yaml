@@ -18,22 +18,41 @@ spec:
       type: string
       description: The name of built image
       default: app
+    - name: gitRepositoryManagerFQDN
+      type: string
+      description: Repository manager fqdn like github.com or bitbucket.org
+      default: github.com
+    - name: gitOrganization
+      type: string
+      description: Github organization
+      default: matsubara-ak
+    - name: gitRepository
+      type: string
+      description: Github source code repository
+      default: tekton-lecture
     - name: gitRevision
       type: string
       description: The revision/branch of the repository
       default: main
-    - name: gitUrl
-      type: string
-      description: The URL of the repository
-      default: https://github.com/tektoncd/website/
   steps:
-    # - name: pytest
-    #   image: python:3.9
-    #   command:
-    #     - /bin/bash
-    #     - -c
-    #   args:
-    #     - cd $(params.srcPath) && pip3 install -r requirements.txt && pip3 install -r dev_requirements.txt && pytest .
+    - name: git-pull
+      args:
+        - clone
+        - https://$(params.gitRepositoryManagerFQDN)/$(params.gitOrganization)/$(params.gitRepository).git
+        - $(params.gitUrl)
+      command:
+        - /usr/bin/git
+      image: docker:git
+      resources: {}
+    - name: git-checkout
+      args:
+        - checkout
+        - $(params.gitRevision)
+      command:
+        - /usr/bin/git
+      image: docker:git
+      resources: {}
+      workingDir: /workspace/$(params.gitRepository)
     - name: docker
       image: docker
       command:

@@ -1,0 +1,11 @@
+# 検証用TaskRun
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: run-task-build-app-
+spec:
+  params:
+    - name: gitRevision
+      value: dev
+  taskRef:
+    name: task-build-app
